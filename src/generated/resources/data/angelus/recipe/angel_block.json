@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "item": "minecraft:feather"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "FSF",
+    "S S",
+    "FSF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "angelus:angel_block"
+  }
+}
