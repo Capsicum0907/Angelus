@@ -10,8 +10,8 @@ block enough for the whole walk.
 Extra Utilities. The Latin is the mod's name; the block keeps the name players
 already search for.
 
-> **Status: stage 1.** Builds, and seven game tests pass headlessly. Not yet opened in
-> a client — nothing here has been looked at.
+> **Status: released, 1.0.0.** Verified in a client, and seven game tests pass
+> headlessly.
 
 ## Target
 
