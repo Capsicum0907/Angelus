@@ -23,6 +23,32 @@ public final class AngelusRegistry {
     public static final String ANGEL_BLOCK_ID = "angel_block";
 
     /**
+     * Wool's sounds, at a quarter of their loudness.
+     *
+     * <p>Wool because the block is put down and taken back once per step, and a sharp
+     * sound is only tolerable when it is occasional. Its samples are the softest
+     * vanilla has for a solid block — a muffled thud with no attack on it.
+     *
+     * <p>Quarter volume because wool alone does not make it quieter: every vanilla
+     * sound type carries volume 1.0, so swapping the type changes the sample and
+     * nothing else. Only this number moves the level.
+     *
+     * <p>⚠ It does not move it linearly. Placing and breaking are played at
+     * {@code (volume + 1) / 2}, so 0.25 lands at 0.63 against every other block's
+     * 1.0, and even 0.0 would only reach 0.5 — half is the floor without replacing
+     * the sound events themselves. Footsteps are the other way, played at
+     * {@code volume * 0.15} with no floor, which is why this is not 0.0: silent to
+     * stand on reads as a bug rather than as quiet.
+     *
+     * <p>The events are read off {@link SoundType#WOOL} rather than named again, so
+     * the one thing that is ours here is the number.
+     */
+    private static final SoundType QUIET_WOOL = new SoundType(0.25F, SoundType.WOOL.getPitch(),
+            SoundType.WOOL.getBreakSound(), SoundType.WOOL.getStepSound(),
+            SoundType.WOOL.getPlaceSound(), SoundType.WOOL.getHitSound(),
+            SoundType.WOOL.getFallSound());
+
+    /**
      * <ul>
      * <li>{@code instabreak} — one hit, no tool. This is scaffolding you are meant to
      *     pick up again as you go, and anything slower turns a walkway into a chore.
@@ -37,10 +63,9 @@ public final class AngelusRegistry {
      *     The cost is that anything which destroys it some other way — an explosion,
      *     another mod calling {@code destroyBlock} — loses it outright. That is the
      *     same bargain the block makes by breaking instantly, and it is cheap.
-     * <li>{@code SCAFFOLDING} — borrowed rather than chosen. It is the sound vanilla
-     *     already uses for the block you put down to stand on and take back, which is
-     *     what this is; picking anything else would only make it sound like something
-     *     it does not behave like.
+     * <li>{@link #QUIET_WOOL} — a block placed and broken this often is
+     *     heard more than any other in the game, so it is the one block whose sound
+     *     should be the least like an event.
      * <li>{@code ICE} — the map colour, and not picked by eye either. {@code
      *     tools/make_textures.py} holds the one tone the sprite is built from and
      *     prints the vanilla map colour nearest it; this is what it printed. Move the
@@ -56,7 +81,7 @@ public final class AngelusRegistry {
                     .instabreak()
                     .noOcclusion()
                     .noLootTable()
-                    .sound(SoundType.SCAFFOLDING));
+                    .sound(QUIET_WOOL));
 
     public static final DeferredItem<AngelBlockItem> ANGEL_BLOCK_ITEM = ITEMS.register(
             ANGEL_BLOCK_ID,
