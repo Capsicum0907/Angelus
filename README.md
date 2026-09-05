@@ -126,4 +126,8 @@ all. It is a different block that shares a name.
 
 ## License
 
-Not decided yet. Until it is, the metadata says All Rights Reserved.
+MIT. Decided on 2026-08-29.
+
+MIT is the choice that puts the fewest obstacles in front of a modpack: All Rights
+Reserved would have meant pack authors quietly leaving it out. It also matches the
+rest of the set, so nobody has to check which of them is which.
