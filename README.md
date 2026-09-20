@@ -32,10 +32,6 @@ python tools/make_textures.py   # regenerate the block sprite
 `JAVA_HOME` must point at a JDK 21, or `java` must be on `PATH`.
 Run the texture script before `runData`.
 
-## Design
-
-See [docs/design.md](docs/design.md).
-
 ## License
 
 MIT.
