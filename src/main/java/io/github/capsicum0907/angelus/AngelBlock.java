@@ -1,6 +1,7 @@
 package io.github.capsicum0907.angelus;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -12,7 +13,7 @@ import net.minecraft.world.level.material.FluidState;
  * The block itself, which does nothing while it stands there.
  *
  * <p>All of its character is in {@link AngelusRegistry#ANGEL_BLOCK}'s properties and
- * in the one method below. Where it can be put is the item's business, not the
+ * in the two methods below. Where it can be put is the item's business, not the
  * block's — see {@link AngelBlockItem}.
  */
 public class AngelBlock extends Block {
@@ -39,6 +40,11 @@ public class AngelBlock extends Block {
      * the player's feet, which is the one case where it does hit the floor — and the
      * right one, since the alternative is losing it.
      */
+    @Override
+    protected boolean skipRendering(BlockState state, BlockState adjacentState, Direction direction) {
+        return adjacentState.is(this) || super.skipRendering(state, adjacentState, direction);
+    }
+
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
             boolean willHarvest, FluidState fluid) {
