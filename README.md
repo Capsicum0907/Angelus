@@ -8,8 +8,16 @@ your inventory.
 
 - It reaches as far as an ordinary block would.
 - It goes into water, tall grass and snow as well as air.
+- You can see through the frame.
 - Four feathers and four sticks make one.
 - There is nothing to configure.
+
+## Screenshots
+
+![Out over nothing](branding/gallery/01-out-over-nothing.png)
+
+The rest are in [branding/gallery](branding/gallery), with their captions in
+[captions.md](branding/gallery/captions.md).
 
 ## Target
 

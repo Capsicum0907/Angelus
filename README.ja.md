@@ -7,8 +7,16 @@
 
 - 設置できる距離は普通のブロックと同じです。
 - 水・背の高い草・雪の中にも置けます。
+- 枠の中は見通せます。
 - 羽根4枚と棒4本で1つ作れます。
 - 設定項目はありません。
+
+## スクリーンショット
+
+![崖から空中へ](branding/gallery/01-out-over-nothing.png)
+
+他の絵は [branding/gallery](branding/gallery) にあります。説明は
+[captions.md](branding/gallery/captions.md) です。
 
 ## 対象
 
@@ -33,4 +41,4 @@ python tools/make_textures.py   # ブロックのテクスチャを作り直す
 
 ## ライセンス
 
-MIT。
+MIT
