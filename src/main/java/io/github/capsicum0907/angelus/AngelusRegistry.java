@@ -77,7 +77,7 @@ public final class AngelusRegistry {
             ANGEL_BLOCK_ID,
             AngelBlock::new,
             BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.ICE)
+                    .mapColor(MapColor.QUARTZ)
                     .instabreak()
                     .noOcclusion()
                     .noLootTable()
