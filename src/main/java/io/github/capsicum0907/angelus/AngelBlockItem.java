@@ -66,7 +66,7 @@ public class AngelBlockItem extends BlockItem {
         ItemStack held = player.getItemInHand(hand);
 
         Vec3 look = player.getLookAngle();
-        Vec3 aimed = player.getEyePosition().add(look.scale(reach(player)));
+        Vec3 aimed = eye(player).add(look.scale(reach(player)));
         //? if >=1.19.4 {
         BlockPos target = BlockPos.containing(aimed);
         //?} else
@@ -89,13 +89,22 @@ public class AngelBlockItem extends BlockItem {
         return new InteractionResultHolder<>(placed, held);
     }
 
+    public static Vec3 eye(Player player) {
+        //? if >=1.17 {
+        return player.getEyePosition();
+        //?} else
+        /*return player.getEyePosition(1.0F);*/
+    }
+
     public static double reach(Player player) {
         //? if >=1.20.5 {
         return player.blockInteractionRange();
         //?} else if forge && >=1.20 {
         /*return player.getBlockReach();
-        *///?} else if forge {
+        *///?} else if forge && >=1.17 {
         /*return player.getReachDistance();
+        *///?} else if forge {
+        /*return player.getAttributeValue(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get());
         *///?}
     }
 }

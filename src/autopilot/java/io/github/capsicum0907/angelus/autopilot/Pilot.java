@@ -120,9 +120,16 @@ public final class Pilot {
     }
 
     public void screenshot(String name) {
+        //? if >=1.17 {
         Screenshot.grab(this.minecraft.gameDirectory, "autopilot-" + name + ".png",
                 this.minecraft.getMainRenderTarget(), message -> {
                 });
+        //?} else {
+        /*Screenshot.grab(this.minecraft.gameDirectory, "autopilot-" + name + ".png",
+                this.minecraft.getWindow().getWidth(), this.minecraft.getWindow().getHeight(),
+                this.minecraft.getMainRenderTarget(), message -> {
+                });
+        *///?}
         this.results.add("SHOT autopilot-" + name + ".png");
     }
 

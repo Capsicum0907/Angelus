@@ -1,5 +1,6 @@
 package io.github.capsicum0907.angelus;
 
+//? if >=1.18
 import com.mojang.logging.LogUtils;
 
 //? if >=1.20
@@ -20,7 +21,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 *///?}
 
+//? if >=1.18 {
 import org.slf4j.Logger;
+//?} else {
+/*import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+*///?}
 
 /**
  * Entry point. {@link #MODID} must match {@code mod_id} in gradle.properties,
@@ -36,7 +42,10 @@ import org.slf4j.Logger;
 public class Angelus {
     public static final String MODID = "angelus";
 
+    //? if >=1.18 {
     private static final Logger LOGGER = LogUtils.getLogger();
+    //?} else
+    /*private static final Logger LOGGER = LogManager.getLogger();*/
 
     //? if neoforge {
     public Angelus(IEventBus modEventBus, ModContainer modContainer) {

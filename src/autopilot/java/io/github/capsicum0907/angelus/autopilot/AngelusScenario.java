@@ -54,7 +54,10 @@ public final class AngelusScenario {
                     pilot.command("gamemode creative");
                     pilot.command("tp @s 0.5 " + STANDING_Y + " 0.5 0 0");
                     pilot.onServer(() -> {
+                        //? if >=1.17 {
                         pilot.serverPlayer().getAbilities().flying = true;
+                        //?} else
+                        /*pilot.serverPlayer().abilities.flying = true;*/
                         pilot.serverPlayer().onUpdateAbilities();
                         return null;
                     });
@@ -65,7 +68,10 @@ public final class AngelusScenario {
                     pilot.command("tp @s 0.5 " + STANDING_Y + " 0.5 0 0");
                     pilot.command("gamemode survival");
                     pilot.command("clear");
+                    //? if >=1.17 {
                     pilot.command("item replace entity @s weapon.mainhand with " + ITEM + " 16");
+                    //?} else
+                    /*pilot.command("replaceitem entity @s weapon.mainhand " + ITEM + " 16");*/
                 });
 
         for (int i = 0; i < ROW; i++) {
@@ -133,7 +139,7 @@ public final class AngelusScenario {
                 feathers += ingredient.test(new ItemStack(Items.FEATHER)) ? 1 : 0;
                 sticks += ingredient.test(new ItemStack(Items.STICK)) ? 1 : 0;
             }
-            return new int[] {feathers, sticks, result.is(AngelusRegistry.ANGEL_BLOCK_ITEM.get()) ? result.getCount() : 0};
+            return new int[] {feathers, sticks, result.getItem() == AngelusRegistry.ANGEL_BLOCK_ITEM.get() ? result.getCount() : 0};
         });
         pilot.check("recipe loaded", found != null, "no recipe angelus:angel_block on the server");
         if (found != null) {
@@ -155,11 +161,14 @@ public final class AngelusScenario {
     }
 
     private static int count(Pilot pilot) {
+        //? if >=1.17 {
         return pilot.serverPlayer().getInventory().countItem(AngelusRegistry.ANGEL_BLOCK_ITEM.get());
+        //?} else
+        /*return pilot.serverPlayer().inventory.countItem(AngelusRegistry.ANGEL_BLOCK_ITEM.get());*/
     }
 
     private static BlockPos aimed(Player player) {
-        Vec3 eye = player.getEyePosition();
+        Vec3 eye = AngelBlockItem.eye(player);
         Vec3 aimed = eye.add(player.getLookAngle().scale(AngelBlockItem.reach(player)));
         //? if >=1.19.4 {
         return BlockPos.containing(aimed);

@@ -18,7 +18,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 //?} else if forge {
 /*import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+//? if >=1.17 {
 import net.minecraftforge.registries.RegistryObject;
+//?} else
+/^import net.minecraftforge.fml.RegistryObject;^/
 *///?}
 
 /**

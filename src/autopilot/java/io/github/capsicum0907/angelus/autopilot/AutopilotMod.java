@@ -17,6 +17,9 @@ import net.minecraftforge.fml.common.Mod;
 /*@Mod("angelus_autopilot")*/
 public final class AutopilotMod {
     public AutopilotMod() {
+        if (System.getProperty("autopilot.world") == null) {
+            return;
+        }
         Pilot pilot = AngelusScenario.create();
         //? if neoforge {
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> pilot.tick());

@@ -46,6 +46,7 @@ public class AngelBlock extends Block {
     }
 
     @Override
+    //? if >=1.17 {
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
             boolean willHarvest, FluidState fluid) {
         if (!level.isClientSide && !player.isCreative()) {
@@ -53,4 +54,13 @@ public class AngelBlock extends Block {
         }
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
+    //?} else {
+    /*public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
+            boolean willHarvest, FluidState fluid) {
+        if (!level.isClientSide && !player.isCreative()) {
+            player.inventory.placeItemBackInInventory(level, new ItemStack(this));
+        }
+        return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+    }
+    *///?}
 }
