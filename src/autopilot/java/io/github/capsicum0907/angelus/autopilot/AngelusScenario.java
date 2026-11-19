@@ -9,6 +9,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+//? if >=1.20.2
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
@@ -37,6 +45,7 @@ public final class AngelusScenario {
                 .then("open " + WORLD, 0, () -> pilot.openWorld(WORLD))
                 .until("in the world", () -> minecraft.player != null && minecraft.level != null
                         && minecraft.getSingleplayerServer() != null && minecraft.player.tickCount > SETTLE)
+                .then("check the recipe", 0, () -> recipe(pilot))
                 .then("fly to the spot", SETTLE, () -> {
                     pilot.command("gamerule doDaylightCycle false");
                     pilot.command("gamerule doWeatherCycle false");
@@ -98,6 +107,40 @@ public final class AngelusScenario {
                 })
                 .then("hand shot", SHORT, () -> pilot.screenshot("hand"));
         return pilot;
+    }
+
+    private static void recipe(Pilot pilot) {
+        int[] found = pilot.onServer(() -> {
+            MinecraftServer server = pilot.minecraft().getSingleplayerServer();
+            //? if >=1.21 {
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath("angelus", "angel_block");
+            //?} else
+            /*ResourceLocation id = new ResourceLocation("angelus", "angel_block");*/
+            //? if >=1.20.2 {
+            Recipe<?> recipe = server.getRecipeManager().byKey(id).map(RecipeHolder::value).orElse(null);
+            //?} else
+            /*Recipe<?> recipe = server.getRecipeManager().byKey(id).orElse(null);*/
+            if (recipe == null) {
+                return null;
+            }
+            //? if >=1.19.4 {
+            ItemStack result = recipe.getResultItem(server.registryAccess());
+            //?} else
+            /*ItemStack result = recipe.getResultItem();*/
+            int feathers = 0;
+            int sticks = 0;
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                feathers += ingredient.test(new ItemStack(Items.FEATHER)) ? 1 : 0;
+                sticks += ingredient.test(new ItemStack(Items.STICK)) ? 1 : 0;
+            }
+            return new int[] {feathers, sticks, result.is(AngelusRegistry.ANGEL_BLOCK_ITEM.get()) ? result.getCount() : 0};
+        });
+        pilot.check("recipe loaded", found != null, "no recipe angelus:angel_block on the server");
+        if (found != null) {
+            pilot.check("recipe takes 4 feathers and 4 sticks", found[0] == 4 && found[1] == 4,
+                    found[0] + " feathers and " + found[1] + " sticks");
+            pilot.check("recipe makes 1 angel block", found[2] == 1, "makes " + found[2]);
+        }
     }
 
     private static Level level(Player player) {
