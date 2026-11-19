@@ -35,7 +35,12 @@ gradlew build                   # produce the jar
 gradlew runGameTestServer       # run every game test, headless, then exit
 gradlew runData                 # regenerate blockstate, models, recipe, language, test stage
 python tools/make_textures.py   # regenerate the block sprite
+python tools/autopilot.py <node> --world <saved world>   # play the checks in a dev client, then exit
 ```
+
+The autopilot is a dev-only mod in `src/autopilot`, loaded only by the `runAutopilot` task and never part of the jar.
+It opens the given world, places blocks in the air, breaks one, records PASS/FAIL lines in
+`versions/<node>/autopilot-run/autopilot/result.txt`, and takes screenshots for what only the eye can judge.
 
 `JAVA_HOME` must point at a JDK 21, or `java` must be on `PATH`.
 Run the texture script before `runData`.

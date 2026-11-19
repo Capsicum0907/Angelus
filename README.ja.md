@@ -34,7 +34,12 @@ gradlew build                   # jar を作る
 gradlew runGameTestServer       # ゲームテストを実行
 gradlew runData                 # ブロックステート・モデル・レシピ・言語ファイルを作り直す
 python tools/make_textures.py   # ブロックのテクスチャを作り直す
+python tools/autopilot.py <ノード> --world <ワールド>   # 開発クライアントで確認を自動で行って終了
 ```
+
+autopilot は `src/autopilot` にある開発専用の Mod で、`runAutopilot` タスクだけが読み込み、jar には入りません。
+指定したワールドを開いて空中にブロックを置き、1つ壊し、結果を
+`versions/<ノード>/autopilot-run/autopilot/result.txt` に PASS/FAIL の行で書き、目で見るしかない部分はスクリーンショットに撮ります。
 
 `JAVA_HOME` が JDK 21 を指しているか `java` が `PATH` にある必要があります。
 テクスチャの生成は `runData` より先に実行してください。

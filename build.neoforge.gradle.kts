@@ -22,6 +22,12 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(Targets.java(minecraft))
 
+val autopilot = sourceSets.create("autopilot") {
+    resources.setSrcDirs(listOf(rootProject.file("src/autopilot/resources/$loader")))
+    compileClasspath += sourceSets.main.get().output
+    runtimeClasspath += sourceSets.main.get().output
+}
+
 neoForge {
     version = property("neo_version") as String
 
@@ -30,10 +36,28 @@ neoForge {
         minecraftVersion = property("parchment_minecraft_version") as String
     }
 
+    mods {
+        register(modId) {
+            sourceSet(sourceSets.main.get())
+        }
+        register("${modId}_autopilot") {
+            sourceSet(autopilot)
+        }
+    }
+
     runs {
         register("client") {
             client()
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
+            loadedMods = listOf(mods.getByName(modId))
+        }
+
+        register("autopilot") {
+            client()
+            loadedMods = listOf(mods.getByName(modId), mods.getByName("${modId}_autopilot"))
+            gameDirectory = layout.projectDirectory.dir("autopilot-run")
+            programArguments.addAll("--width", "1280", "--height", "720")
+            findProperty("autopilotWorld")?.let { systemProperty("autopilot.world", it.toString()) }
         }
 
         register("server") {
@@ -67,11 +91,7 @@ neoForge {
         }
     }
 
-    mods {
-        register(modId) {
-            sourceSet(sourceSets.main.get())
-        }
-    }
+    addModdingDependenciesTo(autopilot)
 }
 
 sourceSets.main {
