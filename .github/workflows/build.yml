@@ -46,8 +46,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # Ten nodes setting up Minecraft at once run the runner out of memory.
       - name: Build with Gradle
-        run: bash gradlew build
+        run: bash gradlew build --max-workers=2
 
       # Compiling only proves the code is well formed, which the local build
       # already says. This is the step that checks the mod does what it claims:
@@ -63,14 +64,21 @@ jobs:
         run: |
           set -o pipefail
           if grep -rq "@GameTestHolder" src/main/java; then
-            bash gradlew runGameTestServer | tee gametest.log
-            # The server exits zero when the mod fails to construct, so the task
-            # goes green having run nothing at all. Only the summary line proves
-            # the tests were reached.
-            if ! grep -q "GAME TESTS COMPLETE" gametest.log; then
-              echo "::error::The game test server exited without reporting a result - the tests never ran."
-              exit 1
-            fi
+            for dir in versions/*/; do
+              node=$(basename "$dir")
+              if ! bash gradlew -q ":$node:tasks" --all | grep -q "^runGameTestServer"; then
+                echo "::warning::$node has no game test server - nothing was verified on it beyond compiling."
+                continue
+              fi
+              bash gradlew ":$node:runGameTestServer" | tee "gametest-$node.log"
+              # The server exits zero when the mod fails to construct, so the task
+              # goes green having run nothing at all. Only the summary line proves
+              # the tests were reached.
+              if ! grep -q "GAME TESTS COMPLETE" "gametest-$node.log"; then
+                echo "::error::The game test server for $node exited without reporting a result - the tests never ran."
+                exit 1
+              fi
+            done
           else
             echo "::warning::No @GameTestHolder in src/main/java - nothing was verified beyond compiling."
           fi
