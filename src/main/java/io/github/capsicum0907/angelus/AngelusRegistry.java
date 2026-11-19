@@ -4,7 +4,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+//? if >=1.20 {
 import net.minecraft.world.level.material.MapColor;
+//?} else {
+/*import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+*///?}
 //? if neoforge {
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -88,13 +94,16 @@ public final class AngelusRegistry {
     public static final DeferredBlock<AngelBlock> ANGEL_BLOCK = BLOCKS.registerBlock(
             ANGEL_BLOCK_ID,
             AngelBlock::new,
-            BlockBehaviour.Properties.of()
     //?} else if forge {
     /*public static final RegistryObject<AngelBlock> ANGEL_BLOCK = BLOCKS.register(
             ANGEL_BLOCK_ID,
-            () -> new AngelBlock(BlockBehaviour.Properties.of()
+            () -> new AngelBlock(
     *///?}
+            //? if >=1.20 {
+            BlockBehaviour.Properties.of()
                     .mapColor(MapColor.QUARTZ)
+            //?} else
+            /*BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS, MaterialColor.QUARTZ)*/
                     .instabreak()
                     .noOcclusion()
                     .noLootTable()
@@ -110,7 +119,10 @@ public final class AngelusRegistry {
             ANGEL_BLOCK_ID,
             // Plain properties: BlockItem already answers getDescriptionId() with the
             // block's, so there is no name to set here and nothing else to say.
-            () -> new AngelBlockItem(ANGEL_BLOCK.get(), new Item.Properties()));
+            () -> new AngelBlockItem(ANGEL_BLOCK.get(), new Item.Properties()
+                    //? if <1.19.3
+                    /*.tab(CreativeModeTab.TAB_DECORATIONS)*/
+            ));
 
     private AngelusRegistry() {
     }

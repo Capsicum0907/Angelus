@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
@@ -67,7 +68,7 @@ public final class AngelusScenario {
                     .then("check block " + step, 0, () -> {
                         BlockPos pos = placed[step];
                         boolean client = minecraft.level.getBlockState(pos).is(angelBlock());
-                        boolean server = pilot.onServer(() -> pilot.serverPlayer().level().getBlockState(pos).is(angelBlock()));
+                        boolean server = pilot.onServer(() -> level(pilot.serverPlayer()).getBlockState(pos).is(angelBlock()));
                         pilot.check("placed in air at " + pos.toShortString() + " (client)", client, "no angel block there");
                         pilot.check("placed in air at " + pos.toShortString() + " (server)", server, "no angel block there");
                     });
@@ -89,7 +90,7 @@ public final class AngelusScenario {
                 .then("break", SHORT, () -> pilot.press(minecraft.options.keyAttack))
                 .then("check break", 0, () -> {
                     BlockPos pos = placed[0];
-                    boolean gone = pilot.onServer(() -> pilot.serverPlayer().level().getBlockState(pos).isAir());
+                    boolean gone = pilot.onServer(() -> level(pilot.serverPlayer()).getBlockState(pos).isAir());
                     int after = pilot.onServer(() -> count(pilot));
                     pilot.check("broken in one hit", gone, "the block is still at " + pos.toShortString());
                     pilot.check("back in the inventory", after == held[0] + 1,
@@ -97,6 +98,13 @@ public final class AngelusScenario {
                 })
                 .then("hand shot", SHORT, () -> pilot.screenshot("hand"));
         return pilot;
+    }
+
+    private static Level level(Player player) {
+        //? if >=1.20 {
+        return player.level();
+        //?} else
+        /*return player.level;*/
     }
 
     private static Block angelBlock() {
@@ -110,6 +118,9 @@ public final class AngelusScenario {
     private static BlockPos aimed(Player player) {
         Vec3 eye = player.getEyePosition();
         Vec3 aimed = eye.add(player.getLookAngle().scale(AngelBlockItem.reach(player)));
+        //? if >=1.19.4 {
         return BlockPos.containing(aimed);
+        //?} else
+        /*return new BlockPos(aimed);*/
     }
 }

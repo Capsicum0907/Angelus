@@ -67,7 +67,10 @@ public class AngelBlockItem extends BlockItem {
 
         Vec3 look = player.getLookAngle();
         Vec3 aimed = player.getEyePosition().add(look.scale(reach(player)));
+        //? if >=1.19.4 {
         BlockPos target = BlockPos.containing(aimed);
+        //?} else
+        /*BlockPos target = new BlockPos(aimed);*/
         if (!level.isInWorldBounds(target)) {
             return InteractionResultHolder.pass(held);
         }
@@ -91,6 +94,8 @@ public class AngelBlockItem extends BlockItem {
         return player.blockInteractionRange();
         //?} else if forge && >=1.20 {
         /*return player.getBlockReach();
+        *///?} else if forge {
+        /*return player.getReachDistance();
         *///?}
     }
 }

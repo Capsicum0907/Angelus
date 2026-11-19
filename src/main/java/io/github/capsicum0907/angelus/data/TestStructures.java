@@ -1,5 +1,6 @@
 package io.github.capsicum0907.angelus.data;
 
+//? if >=1.20 {
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -20,6 +21,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
+//?}
 
 /**
  * The stage the game tests run on: a short ledge, and open air off the end of it.
@@ -35,7 +37,10 @@ import net.minecraft.resources.ResourceLocation;
  * is the entire claim being tested. Everything past {@link #LEDGE} is air, so a
  * block that appears out there appeared unsupported.
  */
-public class TestStructures implements DataProvider {
+public class TestStructures
+        //? if >=1.20
+        implements DataProvider
+{
     /** Referenced by {@code @GameTest(template = ...)}. */
     public static final String LEDGE_AND_AIR = "ledge_and_air";
 
@@ -53,6 +58,7 @@ public class TestStructures implements DataProvider {
     /** The last x that has floor under it. Beyond this there is nothing. */
     public static final int LEDGE = 3;
 
+    //? if >=1.20 {
     private static final String FLOOR = "minecraft:polished_andesite";
     private static final String AIR = "minecraft:air";
 
@@ -127,4 +133,5 @@ public class TestStructures implements DataProvider {
             throw new UncheckedIOException(e);
         }
     }
+    //?}
 }

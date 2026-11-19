@@ -263,15 +263,21 @@ public final class AngelusTests {
 
     /** Where this player's crosshair falls: a whole reach out from the eye. */
     private static BlockPos aimedAt(Player player) {
-        return BlockPos.containing(
-                player.getEyePosition().add(player.getLookAngle().scale(AngelBlockItem.reach(player))));
+        Vec3 aimed = player.getEyePosition().add(player.getLookAngle().scale(AngelBlockItem.reach(player)));
+        //? if >=1.19.4 {
+        return BlockPos.containing(aimed);
+        //?} else
+        /*return new BlockPos(aimed);*/
     }
 
     private static Player mockPlayer(GameTestHelper helper, GameType mode) {
         //? if >=1.20.5 {
         return helper.makeMockPlayer(mode);
         //?} else {
-        /*return new Player(helper.getLevel(), BlockPos.ZERO, 0.0F, new GameProfile(UUID.randomUUID(), "test-mock-player")) {
+        /*return new Player(helper.getLevel(), BlockPos.ZERO, 0.0F, new GameProfile(UUID.randomUUID(), "test-mock-player")
+                //? if >=1.19 && <1.19.3
+                /^, null^/
+        ) {
             @Override
             public boolean isSpectator() {
                 return mode == GameType.SPECTATOR;

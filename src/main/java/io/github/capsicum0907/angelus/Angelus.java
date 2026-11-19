@@ -2,6 +2,7 @@ package io.github.capsicum0907.angelus;
 
 import com.mojang.logging.LogUtils;
 
+//? if >=1.20
 import net.minecraft.world.item.CreativeModeTabs;
 //? if neoforge {
 import net.neoforged.bus.api.IEventBus;
@@ -10,7 +11,8 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 //?} else if forge {
-/*import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+/*//? if >=1.20
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -49,6 +51,7 @@ public class Angelus {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         AngelusRegistry.BLOCKS.register(modEventBus);
         AngelusRegistry.ITEMS.register(modEventBus);
+        //? if >=1.20
         modEventBus.register(this);
 
         LOGGER.info("Angelus {} loaded.", ModLoadingContext.get().getActiveContainer().getModInfo().getVersion());
@@ -60,10 +63,12 @@ public class Angelus {
      * down to stand on and taken back afterwards, and neither is what anybody wants
      * the finished thing to be made of.
      */
+    //? if >=1.20 {
     @SubscribeEvent
     public void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.accept(AngelusRegistry.ANGEL_BLOCK_ITEM.get());
         }
     }
+    //?}
 }
