@@ -61,17 +61,20 @@ neoForge {
         }
 
         register("server") {
+            loadedMods = listOf(mods.getByName(modId))
             server()
             programArgument("--nogui")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
         register("gameTestServer") {
+            loadedMods = listOf(mods.getByName(modId))
             type = "gameTestServer"
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
         register("data") {
+            loadedMods = listOf(mods.getByName(modId))
             data()
             programArguments.addAll(
                 "--mod", modId,

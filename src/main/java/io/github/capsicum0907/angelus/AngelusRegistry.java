@@ -5,9 +5,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+//? if neoforge {
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+//?} else if forge {
+/*import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+*///?}
 
 /**
  * The whole of the mod's contents: one block and the item that places it.
@@ -17,8 +23,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  * that ever shipped it. The Latin is the mod's name, not the block's.
  */
 public final class AngelusRegistry {
+    //? if neoforge {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Angelus.MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Angelus.MODID);
+    //?} else if forge {
+    /*public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Angelus.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Angelus.MODID);
+    *///?}
 
     public static final String ANGEL_BLOCK_ID = "angel_block";
 
@@ -73,17 +84,29 @@ public final class AngelusRegistry {
      *     way the map and the block stay in agreement without anybody checking.
      * </ul>
      */
+    //? if neoforge {
     public static final DeferredBlock<AngelBlock> ANGEL_BLOCK = BLOCKS.registerBlock(
             ANGEL_BLOCK_ID,
             AngelBlock::new,
             BlockBehaviour.Properties.of()
+    //?} else if forge {
+    /*public static final RegistryObject<AngelBlock> ANGEL_BLOCK = BLOCKS.register(
+            ANGEL_BLOCK_ID,
+            () -> new AngelBlock(BlockBehaviour.Properties.of()
+    *///?}
                     .mapColor(MapColor.QUARTZ)
                     .instabreak()
                     .noOcclusion()
                     .noLootTable()
-                    .sound(QUIET_WOOL));
+                    .sound(QUIET_WOOL)
+    //? if forge
+    /*)*/
+            );
 
+    //? if neoforge {
     public static final DeferredItem<AngelBlockItem> ANGEL_BLOCK_ITEM = ITEMS.register(
+    //?} else if forge
+    /*public static final RegistryObject<AngelBlockItem> ANGEL_BLOCK_ITEM = ITEMS.register(*/
             ANGEL_BLOCK_ID,
             // Plain properties: BlockItem already answers getDescriptionId() with the
             // block's, so there is no name to set here and nothing else to say.

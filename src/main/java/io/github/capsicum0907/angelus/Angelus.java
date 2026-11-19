@@ -3,11 +3,20 @@ package io.github.capsicum0907.angelus;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.world.item.CreativeModeTabs;
+//? if neoforge {
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+//?} else if forge {
+/*import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+*///?}
 
 import org.slf4j.Logger;
 
@@ -27,6 +36,7 @@ public class Angelus {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    //? if neoforge {
     public Angelus(IEventBus modEventBus, ModContainer modContainer) {
         AngelusRegistry.BLOCKS.register(modEventBus);
         AngelusRegistry.ITEMS.register(modEventBus);
@@ -34,6 +44,16 @@ public class Angelus {
 
         LOGGER.info("Angelus {} loaded.", modContainer.getModInfo().getVersion());
     }
+    //?} else if forge {
+    /*public Angelus() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        AngelusRegistry.BLOCKS.register(modEventBus);
+        AngelusRegistry.ITEMS.register(modEventBus);
+        modEventBus.register(this);
+
+        LOGGER.info("Angelus {} loaded.", ModLoadingContext.get().getActiveContainer().getModInfo().getVersion());
+    }
+    *///?}
 
     /**
      * Filed with scaffolding rather than with the building materials. Both are put

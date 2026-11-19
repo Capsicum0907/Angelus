@@ -2,6 +2,7 @@ package io.github.capsicum0907.angelus.autopilot;
 
 import java.nio.file.Path;
 
+import io.github.capsicum0907.angelus.AngelBlockItem;
 import io.github.capsicum0907.angelus.AngelusRegistry;
 
 import net.minecraft.client.Minecraft;
@@ -32,8 +33,7 @@ public final class AngelusScenario {
 
         pilot.until("title screen", () -> minecraft.screen instanceof TitleScreen)
                 .then("title shot", SHORT, () -> pilot.screenshot("title"))
-                .then("open " + WORLD, 0, () -> minecraft.createWorldOpenFlows().openWorld(WORLD,
-                        () -> pilot.check("open world", false, WORLD + " could not be opened")))
+                .then("open " + WORLD, 0, () -> pilot.openWorld(WORLD))
                 .until("in the world", () -> minecraft.player != null && minecraft.level != null
                         && minecraft.getSingleplayerServer() != null && minecraft.player.tickCount > SETTLE)
                 .then("fly to the spot", SETTLE, () -> {
@@ -109,7 +109,7 @@ public final class AngelusScenario {
 
     private static BlockPos aimed(Player player) {
         Vec3 eye = player.getEyePosition();
-        Vec3 aimed = eye.add(player.getLookAngle().scale(player.blockInteractionRange()));
+        Vec3 aimed = eye.add(player.getLookAngle().scale(AngelBlockItem.reach(player)));
         return BlockPos.containing(aimed);
     }
 }

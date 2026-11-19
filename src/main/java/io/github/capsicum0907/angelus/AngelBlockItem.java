@@ -66,13 +66,13 @@ public class AngelBlockItem extends BlockItem {
         ItemStack held = player.getItemInHand(hand);
 
         Vec3 look = player.getLookAngle();
-        Vec3 aimed = player.getEyePosition().add(look.scale(player.blockInteractionRange()));
+        Vec3 aimed = player.getEyePosition().add(look.scale(reach(player)));
         BlockPos target = BlockPos.containing(aimed);
         if (!level.isInWorldBounds(target)) {
             return InteractionResultHolder.pass(held);
         }
 
-        BlockHitResult hit = new BlockHitResult(aimed, Direction.getNearest(look.reverse()), target, false);
+        BlockHitResult hit = new BlockHitResult(aimed, Direction.getNearest(-look.x, -look.y, -look.z), target, false);
 
         // ItemStack.useOn, not BlockItem.place: on a server it goes through the hook
         // that captures the placement and offers it to BlockEvent.EntityPlaceEvent,
@@ -84,5 +84,13 @@ public class AngelBlockItem extends BlockItem {
         // override — and it takes it only for an item carrying a FOOD component.
         InteractionResult placed = held.useOn(new UseOnContext(player, hand, hit));
         return new InteractionResultHolder<>(placed, held);
+    }
+
+    public static double reach(Player player) {
+        //? if >=1.20.5 {
+        return player.blockInteractionRange();
+        //?} else if forge && >=1.20 {
+        /*return player.getBlockReach();
+        *///?}
     }
 }

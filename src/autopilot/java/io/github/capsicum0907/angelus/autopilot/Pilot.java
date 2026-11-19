@@ -96,7 +96,8 @@ public final class Pilot {
         try {
             if (!step.until.getAsBoolean()) {
                 if (++this.waited > CONDITION_TIMEOUT_TICKS) {
-                    this.results.add("FAIL " + step.name + ": condition never held");
+                    this.results.add("FAIL " + step.name + ": condition never held, the screen was "
+                            + (this.minecraft.screen == null ? "none" : this.minecraft.screen.getClass().getName()));
                     finish();
                 }
                 return;
@@ -123,6 +124,16 @@ public final class Pilot {
                 this.minecraft.getMainRenderTarget(), message -> {
                 });
         this.results.add("SHOT autopilot-" + name + ".png");
+    }
+
+    public void openWorld(String name) {
+        //? if >=1.20.5 {
+        this.minecraft.createWorldOpenFlows().openWorld(name,
+                () -> check("open " + name, false, "the world could not be opened"));
+        //?} else if >=1.19 {
+        /*this.minecraft.createWorldOpenFlows().loadLevel(this.minecraft.screen, name);
+        *///?} else
+        /*this.minecraft.loadLevel(name);*/
     }
 
     public void press(KeyMapping key) {

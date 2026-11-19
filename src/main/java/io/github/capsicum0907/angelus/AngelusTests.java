@@ -14,8 +14,18 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+//? if neoforge {
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+//?} else if forge {
+/*import net.minecraftforge.gametest.GameTestHolder;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
+*///?}
+//? if <1.20.5 {
+/*import com.mojang.authlib.GameProfile;
+
+import java.util.UUID;
+*///?}
 
 /**
  * What the block does, checked without a person having to look.
@@ -94,7 +104,7 @@ public final class AngelusTests {
     public static void goesWhereItIsAimed(GameTestHelper helper) {
         Player player = aiming(helper, GameType.SURVIVAL, new ItemStack(AngelusRegistry.block()));
         Vec3 eye = player.getEyePosition();
-        double reach = player.blockInteractionRange();
+        double reach = AngelBlockItem.reach(player);
 
         BlockPos first = aimedAt(player);
         use(player, helper);
@@ -240,7 +250,7 @@ public final class AngelusTests {
         Vec3 outward = helper.absoluteVec(Vec3.atLowerCornerOf(STAND.east()))
                 .subtract(helper.absoluteVec(Vec3.atLowerCornerOf(STAND)));
 
-        Player player = helper.makeMockPlayer(mode);
+        Player player = mockPlayer(helper, mode);
         player.moveTo(here.x, here.y, here.z, yaw(outward), 0.0F);
         player.setItemInHand(InteractionHand.MAIN_HAND, held);
         return player;
@@ -254,7 +264,25 @@ public final class AngelusTests {
     /** Where this player's crosshair falls: a whole reach out from the eye. */
     private static BlockPos aimedAt(Player player) {
         return BlockPos.containing(
-                player.getEyePosition().add(player.getLookAngle().scale(player.blockInteractionRange())));
+                player.getEyePosition().add(player.getLookAngle().scale(AngelBlockItem.reach(player))));
+    }
+
+    private static Player mockPlayer(GameTestHelper helper, GameType mode) {
+        //? if >=1.20.5 {
+        return helper.makeMockPlayer(mode);
+        //?} else {
+        /*return new Player(helper.getLevel(), BlockPos.ZERO, 0.0F, new GameProfile(UUID.randomUUID(), "test-mock-player")) {
+            @Override
+            public boolean isSpectator() {
+                return mode == GameType.SPECTATOR;
+            }
+
+            @Override
+            public boolean isCreative() {
+                return mode == GameType.CREATIVE;
+            }
+        };
+        *///?}
     }
 
     private static void use(Player player, GameTestHelper helper) {
