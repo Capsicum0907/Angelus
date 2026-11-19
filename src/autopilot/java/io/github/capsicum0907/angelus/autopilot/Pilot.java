@@ -144,8 +144,13 @@ public final class Pilot {
         IntegratedServer server = this.minecraft.getSingleplayerServer();
         onServer(() -> {
             ServerPlayer player = server.getPlayerList().getPlayers().get(0);
+            //? if >=1.19 {
             server.getCommands().performPrefixedCommand(
                     player.createCommandSourceStack().withPermission(4).withSuppressedOutput(), command);
+            //?} else {
+            /*server.getCommands().performCommand(
+                    player.createCommandSourceStack().withPermission(4).withSuppressedOutput(), command);
+            *///?}
             return null;
         });
     }

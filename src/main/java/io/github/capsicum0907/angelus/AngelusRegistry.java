@@ -106,7 +106,10 @@ public final class AngelusRegistry {
             /*BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS, MaterialColor.QUARTZ)*/
                     .instabreak()
                     .noOcclusion()
+                    //? if >=1.19 {
                     .noLootTable()
+                    //?} else
+                    /*.noDrops()*/
                     .sound(QUIET_WOOL)
     //? if forge
     /*)*/

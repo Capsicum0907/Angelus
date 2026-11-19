@@ -51,6 +51,11 @@ public class Angelus {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         AngelusRegistry.BLOCKS.register(modEventBus);
         AngelusRegistry.ITEMS.register(modEventBus);
+        //? if <1.19 {
+        /^if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
+            RenderLayers.register(modEventBus);
+        }
+        ^///?}
         //? if >=1.20
         modEventBus.register(this);
 
