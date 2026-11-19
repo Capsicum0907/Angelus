@@ -1,6 +1,6 @@
 package io.github.capsicum0907.angelus.data;
 
-//? if >=1.20 {
+//? if >=1.21 {
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -38,7 +38,7 @@ import net.minecraft.resources.ResourceLocation;
  * block that appears out there appeared unsupported.
  */
 public class TestStructures
-        //? if >=1.20
+        //? if >=1.21
         implements DataProvider
 {
     /** Referenced by {@code @GameTest(template = ...)}. */
@@ -58,7 +58,7 @@ public class TestStructures
     /** The last x that has floor under it. Beyond this there is nothing. */
     public static final int LEDGE = 3;
 
-    //? if >=1.20 {
+    //? if >=1.21 {
     private static final String FLOOR = "minecraft:polished_andesite";
     private static final String AIR = "minecraft:air";
 
