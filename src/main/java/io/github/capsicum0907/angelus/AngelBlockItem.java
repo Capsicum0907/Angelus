@@ -104,7 +104,7 @@ public class AngelBlockItem extends BlockItem {
         *///?} else if forge && >=1.17 {
         /*return player.getReachDistance();
         *///?} else if forge {
-        /*return player.getAttributeValue(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get());
+        /*return player.getAttributeValue(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()) - (player.isCreative() ? 0.0 : 0.5);
         *///?} else {
         /*return player.isCreative() ? 5.0 : 4.5;
         *///?}

@@ -78,7 +78,15 @@ public final class AngelusScenario {
             int step = i;
             pilot.then("stand for block " + step, SHORT,
                     () -> pilot.command("tp @s " + (step + 0.5) + " " + STANDING_Y + " 0.5 0 0"))
-                    .then("aim block " + step, SHORT, () -> placed[step] = aimed(minecraft.player))
+                    .then("aim block " + step, SHORT, () -> {
+                        placed[step] = aimed(minecraft.player);
+                        if (step == 0) {
+                            double ours = AngelBlockItem.reach(minecraft.player);
+                            double vanilla = vanillaReach(minecraft);
+                            pilot.check("reach " + ours + " matches an ordinary block", Math.abs(ours - vanilla) < 1e-6,
+                                    "an ordinary block reaches " + vanilla);
+                        }
+                    })
                     .then("use on air " + step, SHORT, () -> pilot.press(minecraft.options.keyUse))
                     .then("check block " + step, 0, () -> {
                         BlockPos pos = placed[step];
@@ -147,6 +155,13 @@ public final class AngelusScenario {
                     found[0] + " feathers and " + found[1] + " sticks");
             pilot.check("recipe makes 1 angel block", found[2] == 1, "makes " + found[2]);
         }
+    }
+
+    private static double vanillaReach(Minecraft minecraft) {
+        //? if >=1.20.5 {
+        return minecraft.player.blockInteractionRange();
+        //?} else
+        /*return minecraft.gameMode.getPickRange();*/
     }
 
     private static Level level(Player player) {
