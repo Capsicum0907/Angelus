@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
@@ -144,7 +146,7 @@ public final class Pilot {
     }
 
     public void press(KeyMapping key) {
-        KeyMapping.click(key.getKey());
+        KeyMapping.click(InputConstants.getKey(key.saveString()));
     }
 
     public void command(String command) {

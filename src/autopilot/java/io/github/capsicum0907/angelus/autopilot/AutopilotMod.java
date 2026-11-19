@@ -9,8 +9,23 @@ import net.neoforged.neoforge.common.NeoForge;
 /*import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.Mod;
+*///?} else if fabric {
+/*import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 *///?}
 
+//? if fabric {
+/*public final class AutopilotMod implements ClientModInitializer {
+    @Override
+    public void onInitializeClient() {
+        if (System.getProperty("autopilot.world") == null) {
+            return;
+        }
+        Pilot pilot = AngelusScenario.create();
+        ClientTickEvents.END_CLIENT_TICK.register(client -> pilot.tick());
+    }
+}
+*///?} else {
 //? if neoforge {
 @Mod(value = "angelus_autopilot", dist = Dist.CLIENT)
 //?} else if forge
@@ -32,3 +47,4 @@ public final class AutopilotMod {
         *///?}
     }
 }
+//?}

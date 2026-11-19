@@ -46,7 +46,16 @@ public class AngelBlock extends Block {
     }
 
     @Override
-    //? if >=1.17 {
+    //? if fabric {
+    /*public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state,
+            net.minecraft.world.level.block.entity.BlockEntity blockEntity, ItemStack tool) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        //? if >=1.17 {
+        player.getInventory().placeItemBackInInventory(new ItemStack(this));
+        //?} else
+        /^player.inventory.placeItemBackInInventory(level, new ItemStack(this));^/
+    }
+    *///?} else if >=1.17 {
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
             boolean willHarvest, FluidState fluid) {
         if (!level.isClientSide && !player.isCreative()) {

@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 //? if neoforge {
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
-//?} else if forge {
+//?} else if !fabric {
 /*import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 *///?}
@@ -44,9 +44,16 @@ import java.util.UUID;
  *
  * <p>Run with {@code gradlew runGameTestServer}.
  */
+//? if !fabric {
 @GameTestHolder(Angelus.MODID)
 @PrefixGameTestTemplate(false)
+//?}
 public final class AngelusTests {
+    //? if fabric {
+    /*private static final String TEMPLATE = Angelus.MODID + ":" + TestStructures.LEDGE_AND_AIR;
+    *///?} else
+    private static final String TEMPLATE = TestStructures.LEDGE_AND_AIR;
+
     /** On the last block of the ledge, with the drop off the end of it. */
     private static final BlockPos STAND = new BlockPos(TestStructures.LEDGE, 1, 3);
 
@@ -59,6 +66,9 @@ public final class AngelusTests {
      */
     private static final double HALF_DIAGONAL = 0.87;
 
+    //? if fabric {
+    /*public AngelusTests() {
+    *///?} else
     private AngelusTests() {
     }
 
@@ -70,7 +80,7 @@ public final class AngelusTests {
      * would be an ordinary placement against that neighbour and would prove nothing,
      * which is why the stage has a short ledge and open air rather than a floor.
      */
-    @GameTest(template = TestStructures.LEDGE_AND_AIR)
+    @GameTest(template = TEMPLATE)
     public static void placesWithNothingToPlaceAgainst(GameTestHelper helper) {
         Player player = aiming(helper, GameType.SURVIVAL, new ItemStack(AngelusRegistry.block()));
         BlockPos where = aimedAt(player);
@@ -100,7 +110,7 @@ public final class AngelusTests {
      * {@link Player#blockInteractionRange()} rather than against a number written
      * here - the point is that the two agree.
      */
-    @GameTest(template = TestStructures.LEDGE_AND_AIR)
+    @GameTest(template = TEMPLATE)
     public static void goesWhereItIsAimed(GameTestHelper helper) {
         Player player = aiming(helper, GameType.SURVIVAL, new ItemStack(AngelusRegistry.block()));
         Vec3 eye = player.getEyePosition();
@@ -137,7 +147,7 @@ public final class AngelusTests {
      * {@code == Blocks.AIR} instead would refuse here, and refuse in tall grass and
      * snow and everywhere else a block can ordinarily be put.
      */
-    @GameTest(template = TestStructures.LEDGE_AND_AIR)
+    @GameTest(template = TEMPLATE)
     public static void goesInWaterAsWellAsAir(GameTestHelper helper) {
         Player player = aiming(helper, GameType.SURVIVAL, new ItemStack(AngelusRegistry.block()));
         BlockPos where = aimedAt(player);
@@ -159,7 +169,7 @@ public final class AngelusTests {
      * the {@code useOn} path long before {@code use} was called - so the only thing
      * worth pinning down here is the safe half: the stone survives.
      */
-    @GameTest(template = TestStructures.LEDGE_AND_AIR)
+    @GameTest(template = TEMPLATE)
     public static void neverOverwritesWhatIsThere(GameTestHelper helper) {
         Player player = aiming(helper, GameType.SURVIVAL, new ItemStack(AngelusRegistry.block()));
         BlockPos where = aimedAt(player);
@@ -180,7 +190,7 @@ public final class AngelusTests {
      * server makes when a player finishes mining, rather than by reaching for the
      * override directly - so the dispatch is part of what is being checked.
      */
-    @GameTest(template = TestStructures.LEDGE_AND_AIR)
+    @GameTest(template = TEMPLATE)
     public static void comesBackToTheHand(GameTestHelper helper) {
         Player player = aiming(helper, GameType.SURVIVAL, ItemStack.EMPTY);
         BlockPos where = aimedAt(player);
@@ -199,7 +209,7 @@ public final class AngelusTests {
      * The mirror of the test above, and the one that would catch a duplication bug: a
      * creative player breaking a block must not be handed a copy of it.
      */
-    @GameTest(template = TestStructures.LEDGE_AND_AIR)
+    @GameTest(template = TEMPLATE)
     public static void givesCreativeNothingBack(GameTestHelper helper) {
         Player player = aiming(helper, GameType.CREATIVE, ItemStack.EMPTY);
         BlockPos where = aimedAt(player);
@@ -222,7 +232,7 @@ public final class AngelusTests {
      * look at that nobody guesses the cause from it, which is why it is worth a test
      * rather than a comment.
      */
-    @GameTest(template = TestStructures.LEDGE_AND_AIR)
+    @GameTest(template = TEMPLATE)
     public static void isNotSolid(GameTestHelper helper) {
         BlockState state = AngelusRegistry.block().defaultBlockState();
         check(!state.canOcclude(),
@@ -298,8 +308,15 @@ public final class AngelusTests {
 
     private static void broken(GameTestHelper helper, Player player, BlockPos where) {
         BlockState state = helper.getLevel().getBlockState(where);
+        //? if fabric {
+        /*helper.getLevel().removeBlock(where, false);
+        if (!player.isCreative()) {
+            state.getBlock().playerDestroy(helper.getLevel(), player, where, state, null, ItemStack.EMPTY);
+        }
+        *///?} else {
         state.onDestroyedByPlayer(helper.getLevel(), where, player, true,
                 helper.getLevel().getFluidState(where));
+        //?}
     }
 
     // --- what went wrong --------------------------------------------------------

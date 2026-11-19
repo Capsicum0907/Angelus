@@ -15,4 +15,15 @@ public final class RenderLayers {
                 () -> ItemBlockRenderTypes.setRenderLayer(AngelusRegistry.block(), RenderType.cutout())));
     }
 }
+*///?} else if fabric {
+/*import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.minecraft.client.renderer.RenderType;
+
+public final class RenderLayers implements ClientModInitializer {
+    @Override
+    public void onInitializeClient() {
+        BlockRenderLayerMap.INSTANCE.putBlock(AngelusRegistry.block(), RenderType.cutout());
+    }
+}
 *///?}

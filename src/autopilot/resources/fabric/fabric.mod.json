@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "angelus_autopilot",
+  "version": "0",
+  "name": "Angelus autopilot",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["io.github.capsicum0907.angelus.autopilot.AutopilotMod"]
+  }
+}

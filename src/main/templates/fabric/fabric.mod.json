@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": ${mod_description},
+  "authors": [${mod_authors}],
+  "license": "${mod_license}",
+  "environment": "*",
+  "entrypoints": ${entrypoints},
+  "depends": {
+    "fabricloader": "${loader_version_range}",
+    "${fabric_api_mod_id}": "${loader_dependency_range}",
+    "minecraft": "${minecraft_version_range}",
+    "java": ">=${java_version}"
+  }
+}

@@ -22,6 +22,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 //?} else
 /^import net.minecraftforge.fml.RegistryObject;^/
+*///?} else if fabric {
+/*import java.util.function.Supplier;
 *///?}
 
 /**
@@ -38,6 +40,12 @@ public final class AngelusRegistry {
     //?} else if forge {
     /*public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Angelus.MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Angelus.MODID);
+    *///?} else if fabric && >=1.19.3 {
+    /*public static final Registrar<Block> BLOCKS = new Registrar<>(net.minecraft.core.registries.BuiltInRegistries.BLOCK);
+    public static final Registrar<Item> ITEMS = new Registrar<>(net.minecraft.core.registries.BuiltInRegistries.ITEM);
+    *///?} else if fabric {
+    /*public static final Registrar<Block> BLOCKS = new Registrar<>(net.minecraft.core.Registry.BLOCK);
+    public static final Registrar<Item> ITEMS = new Registrar<>(net.minecraft.core.Registry.ITEM);
     *///?}
 
     public static final String ANGEL_BLOCK_ID = "angel_block";
@@ -101,6 +109,10 @@ public final class AngelusRegistry {
     /*public static final RegistryObject<AngelBlock> ANGEL_BLOCK = BLOCKS.register(
             ANGEL_BLOCK_ID,
             () -> new AngelBlock(
+    *///?} else if fabric {
+    /*public static final Supplier<AngelBlock> ANGEL_BLOCK = BLOCKS.register(
+            ANGEL_BLOCK_ID,
+            () -> new AngelBlock(
     *///?}
             //? if >=1.20 {
             BlockBehaviour.Properties.of()
@@ -114,14 +126,16 @@ public final class AngelusRegistry {
                     //?} else
                     /*.noDrops()*/
                     .sound(QUIET_WOOL)
-    //? if forge
+    //? if !neoforge
     /*)*/
             );
 
     //? if neoforge {
     public static final DeferredItem<AngelBlockItem> ANGEL_BLOCK_ITEM = ITEMS.register(
-    //?} else if forge
-    /*public static final RegistryObject<AngelBlockItem> ANGEL_BLOCK_ITEM = ITEMS.register(*/
+    //?} else if forge {
+    /*public static final RegistryObject<AngelBlockItem> ANGEL_BLOCK_ITEM = ITEMS.register(
+    *///?} else
+    /*public static final Supplier<AngelBlockItem> ANGEL_BLOCK_ITEM = ITEMS.register(*/
             ANGEL_BLOCK_ID,
             // Plain properties: BlockItem already answers getDescriptionId() with the
             // block's, so there is no name to set here and nothing else to say.

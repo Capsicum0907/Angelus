@@ -19,6 +19,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+*///?} else if fabric {
+/*//? if >=1.20
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 *///?}
 
 //? if >=1.18 {
@@ -38,8 +43,12 @@ import org.apache.logging.log4j.Logger;
  * the same attribute that decides how far away you can place an ordinary block.
  * See {@link AngelBlockItem#use}. A slider would only let the two disagree.
  */
+//? if fabric {
+/*public class Angelus implements ModInitializer {
+*///?} else {
 @Mod(Angelus.MODID)
 public class Angelus {
+//?}
     public static final String MODID = "angelus";
 
     //? if >=1.18 {
@@ -70,6 +79,17 @@ public class Angelus {
 
         LOGGER.info("Angelus {} loaded.", ModLoadingContext.get().getActiveContainer().getModInfo().getVersion());
     }
+    *///?} else if fabric {
+    /*@Override
+    public void onInitialize() {
+        AngelusRegistry.BLOCKS.register();
+        AngelusRegistry.ITEMS.register();
+        //? if >=1.20
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(entries -> entries.accept(AngelusRegistry.ANGEL_BLOCK_ITEM.get()));
+
+        LOGGER.info("Angelus {} loaded.", FabricLoader.getInstance().getModContainer(MODID)
+                .orElseThrow(IllegalStateException::new).getMetadata().getVersion().getFriendlyString());
+    }
     *///?}
 
     /**
@@ -77,7 +97,7 @@ public class Angelus {
      * down to stand on and taken back afterwards, and neither is what anybody wants
      * the finished thing to be made of.
      */
-    //? if >=1.20 {
+    //? if >=1.20 && !fabric {
     @SubscribeEvent
     public void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
